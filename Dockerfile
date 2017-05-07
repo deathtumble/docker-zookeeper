@@ -13,6 +13,10 @@ RUN chmod +x /usr/local/sbin/start.sh
 
 RUN apk add --no-cache wget bash
 
+RUN mkdir /zookeeper \
+    && echo 0 >> /zookeeper/zookeeper.config \
+    && chown -R root:root /zookeeper/
+    
 RUN mkdir /opt \
   && wget -q -O - ${ZOOKEEPER_MIRROR}/dist/zookeeper/zookeeper-${ZOOKEEPER_VERSION}/zookeeper-${ZOOKEEPER_VERSION}.tar.gz | tar -xzf - -C /opt \
   && mv /opt/zookeeper-* /opt/zookeeper \
@@ -25,6 +29,6 @@ RUN addgroup -S zookeeper \
 
 EXPOSE 2181 2888 3888
 
-VOLUME ["/opt/zookeeper/conf", "/var/lib/zookeeper"]
+VOLUME ["/opt/zookeeper/conf", "/var/lib/zookeeper", "/zookeeper"]
 
 ENTRYPOINT ["/usr/local/sbin/start.sh"]

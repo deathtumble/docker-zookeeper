@@ -3,10 +3,10 @@
 # Fail hard and fast
 set -eo pipefail
 
-ZOOKEEPER_ID=${ZOOKEEPER_ID:-1}
-echo "ZOOKEEPER_ID=$ZOOKEEPER_ID"
+cat /zookeeper/zookeeper.config > /var/lib/zookeeper/myid
+cat /var/lib/zookeeper/myid
 
-echo $ZOOKEEPER_ID > /var/lib/zookeeper/myid
+ZOOKEEPER_ID=$(cat /var/lib/zookeeper/myid)
 
 ZOOKEEPER_TICK_TIME=${ZOOKEEPER_TICK_TIME:-2000}
 echo "tickTime=${ZOOKEEPER_TICK_TIME}" > /opt/zookeeper/conf/zoo.cfg
